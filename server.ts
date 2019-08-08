@@ -32,6 +32,9 @@ export class HotkeylessAHKServer {
             this.pendingResult = null;
             res.send("success");
             console.log(`Send command: ${command}`);
+            if(command === "kill") {
+                process.exit(0);
+            }
         } else {
             console.error("No subscribing process registered. Please call '/subscribe' first!");
             res.send("failure");
