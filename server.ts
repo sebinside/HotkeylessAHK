@@ -38,6 +38,11 @@ export class HotkeylessAHKServer {
         }
     };
 
+    private killFunction: RequestHandler = (req, res) => {
+        console.log("Shutting down server...");
+        process.exit(0);
+    };
+
     constructor(private serverPort: number) {
     }
 
@@ -47,6 +52,8 @@ export class HotkeylessAHKServer {
         this.router.get("/subscribe", this.subscriberFunction);
 
         this.router.get("/send/:command", this.sendFunction);
+
+        this.router.get("/kill", this.killFunction);
 
         // Start server
         this.app.use('/', this.router);
