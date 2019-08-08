@@ -44,9 +44,9 @@ export class HotkeylessAHKServer {
     setup() {
         console.log("Starting server...");
 
-        this.router.get("/wait", this.subscriberFunction);
+        this.router.get("/wait", this.waitFunction);
 
-        this.router.get("/notify/:command", this.sendFunction);
+        this.router.get("/notify/:command", this.notifyFunction);
 
         // Start server
         this.app.use('/', this.router);
