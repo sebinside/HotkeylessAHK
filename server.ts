@@ -1,5 +1,5 @@
 import * as express from "express";
-import {RequestHandler} from "express";
+import {RequestHandler, Response} from "express";
 
 export class HotkeylessAHKServer {
 
@@ -7,8 +7,36 @@ export class HotkeylessAHKServer {
     private app = express();
     private router = express.Router();
 
-    private triggerRes : express.Response = null;
+    private pendingResult: Response = null;
 
+    /**
+     * Handles the subscriber aka. redirecting ahk script
+     */
+    private subscriberFunction: RequestHandler = (req, res) => {
+        if (this.pendingResult !== null) {
+            console.error("Already subscribed an AHK script with '/subscribe'. Please check your processes!");
+            res.send("");
+        } else {
+            this.pendingResult = res;
+            console.log("Received subscriber.");
+        }
+    };
+
+    /**
+     * Handles the sender aka the caller e.g. a stream deck
+     */
+    private sendFunction: RequestHandler = (req, res) => {
+        if (this.pendingResult !== null) {
+            const command = req.params.command;
+            this.pendingResult.send(command);
+            this.pendingResult = null;
+            res.send("success");
+            console.log(`Send command: ${command}`);
+        } else {
+            console.error("No subscribing process registered. Please call '/subscribe' first!");
+            res.send("failure");
+        }
+    };
 
     constructor(private serverPort: number) {
     }
@@ -16,30 +44,14 @@ export class HotkeylessAHKServer {
     setup() {
         console.log("Starting server...");
 
-        // Register handling functions
-        // /trigger only called once
-        this.router.get("/trigger", this.triggerFunction);
+        this.router.get("/subscribe", this.subscriberFunction);
 
-        // Register handling functions
-        // /release called with value
-        this.router.get("/release/:command", this.releaseFunction);
+        this.router.get("/send/:command", this.sendFunction);
 
         // Start server
         this.app.use('/', this.router);
         this.app.listen(this.serverPort);
         console.log(`Server running on port ${this.serverPort}.`);
-    }
-
-    private triggerFunction : RequestHandler = (req, res) => {
-        // TODO: Handle an already existing trigger
-        this.triggerRes = res;
-    };
-
-    private releaseFunction : RequestHandler = (req, res) => {
-        if(this.triggerRes !== null) {
-            this.triggerRes.send(`ok: ${req.params.command}`);
-            this.triggerRes = null;
-        }
-        res.send("ok.")
+        console.log("Please use the '/subscribe endpoint first!");
     }
 }
