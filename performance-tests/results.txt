@@ -1,0 +1,8 @@
+TEST 1: Windows start file
+780ms - Very scalable, just opens a script file. But is so damn slow...
+
+TEST 2: Native Hotkeys
+6ms - Obviously the fastest, but relies on hotkeys (not scalable)
+
+TEST 3: HotkeylessAHK
+104ms - Best of both worlds. Scalable as **** and also reasonably fast
