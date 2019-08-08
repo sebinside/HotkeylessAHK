@@ -38,11 +38,19 @@ var HotkeylessAHKServer = /** @class */ (function () {
                 res.send("failure");
             }
         };
+        /**
+         * Stops the node process
+         */
+        this.killFunction = function (req, res) {
+            console.log("Shutting down server...");
+            process.exit(0);
+        };
     }
     HotkeylessAHKServer.prototype.setup = function () {
         console.log("Starting server...");
         this.router.get("/subscribe", this.subscriberFunction);
         this.router.get("/send/:command", this.sendFunction);
+        this.router.get("/kill", this.killFunction);
         // Start server
         this.app.use('/', this.router);
         this.app.listen(this.serverPort);
