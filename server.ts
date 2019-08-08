@@ -38,6 +38,9 @@ export class HotkeylessAHKServer {
         }
     };
 
+    /**
+     * Stops the node process
+     */
     private killFunction: RequestHandler = (req, res) => {
         console.log("Shutting down server...");
         process.exit(0);
