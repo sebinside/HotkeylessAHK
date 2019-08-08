@@ -10,11 +10,11 @@ export class HotkeylessAHKServer {
     private pendingResult: Response = null;
 
     /**
-     * Handles the subscriber aka. redirecting ahk script
+     * Handles the waiting aka. subscriber/redirecting ahk script
      */
-    private subscriberFunction: RequestHandler = (req, res) => {
+    private waitFunction: RequestHandler = (req, res) => {
         if (this.pendingResult !== null) {
-            console.error("Already subscribed an AHK script with '/subscribe'. Please check your processes!");
+            console.error("Already waiting for an AHK script with '/wait'. Please check your processes!");
             res.send("");
         } else {
             this.pendingResult = res;
@@ -23,9 +23,9 @@ export class HotkeylessAHKServer {
     };
 
     /**
-     * Handles the sender aka the caller e.g. a stream deck
+     * Handles the noitifier aka the caller e.g. a stream deck
      */
-    private sendFunction: RequestHandler = (req, res) => {
+    private notifyFunction: RequestHandler = (req, res) => {
         if (this.pendingResult !== null) {
             const command = req.params.command;
             this.pendingResult.send(command);
@@ -33,7 +33,7 @@ export class HotkeylessAHKServer {
             res.send("success");
             console.log(`Send command: ${command}`);
         } else {
-            console.error("No subscribing process registered. Please call '/subscribe' first!");
+            console.error("No waiting process registered. Please call '/wait' first!");
             res.send("failure");
         }
     };
@@ -44,9 +44,9 @@ export class HotkeylessAHKServer {
     setup() {
         console.log("Starting server...");
 
-        this.router.get("/subscribe", this.subscriberFunction);
+        this.router.get("/wait", this.subscriberFunction);
 
-        this.router.get("/send/:command", this.sendFunction);
+        this.router.get("/notify/:command", this.sendFunction);
 
         // Start server
         this.app.use('/', this.router);
