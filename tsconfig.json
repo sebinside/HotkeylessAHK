@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "outDir": "dist",
     "target": "es3",
     "esModuleInterop": true,
     "moduleResolution": "node",
