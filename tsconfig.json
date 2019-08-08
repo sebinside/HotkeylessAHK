@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "outDir": "dist",
+    "target": "es3",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "lib": ["es2017"]
+  },
+  "include": ["*.ts"]
+}
