@@ -18,7 +18,7 @@ export class HotkeylessAHKServer {
             res.send("");
         } else {
             this.pendingResult = res;
-            console.log("Received subscriber.");
+            console.log("Received new command.");
         }
     };
 
@@ -52,6 +52,6 @@ export class HotkeylessAHKServer {
         this.app.use('/', this.router);
         this.app.listen(this.serverPort);
         console.log(`Server running on port ${this.serverPort}.`);
-        console.log("Please use the '/subscribe endpoint first!");
+        console.log("Please use the '/subscribe' endpoint first!");
     }
 }
