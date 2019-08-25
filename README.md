@@ -37,12 +37,35 @@ You can include your own AHK-scripts there and define custom functionality in a 
 
 ## Installation
 
-TODO: Explain functionality, installation
+1. Install [AutoHotkey](https://www.autohotkey.com/). Well... if you're reading this, you will probably already have.
+2. Install node. You can download it from https://nodejs.org/. Make sure that node is in the PATH-variable and available from the console. You can test this by executing `node -v`
+3. Clone or download this repository. You can also just head over to [releases](https://github.com/sebinside/HotkeylessAHK)
+4. Open a console window and enter the `files` folder. Then, execute `npm install` to install all web server dependencies.
+5. Start *Hotkeyless Authotkey* by executing the `HotkeylessAHK.ahk`-file.
+6. Open your web browser and navigate to `http://localhost:42800/send/HelloWorld`. This should open a message dialog, triggered from the `HotkeylessAHK.ahk`-file.
+7. Now, you're ready to go.
+
+*Troubleshooting*: If anything does not work, disable console window hiding by deleting line 3 and 4 in the `SetupServer()`-method in the `lib.ahk`-file and restart the process. This might give you more information.
+
+```
+DllCall("AllocConsole")
+WinHide % "ahk_id " DllCall("GetConsoleWindow", "ptr")
+```
 
 ## Usage
 
-TODO: Explain usage
+Once installed, the usage of **Hotkeyless AutoHotkey** is easy: Write your own methods inside the `HotkeylessAHK.ahk`-file (or include other scripts) and call them with your web browser, the `curl`-console command, a stream deck, ...
+
+The endpoint is always the same: `http://localhost:42800/send/YourFunctionNameGoesHere`.
+
+To terminate the running tool, call `http://localhost:42800/send/kill`.
 
 ## More
 
-Additional resources, incl. taran and ahk2premiere
+This is yet another small tool to enhance the power of AHK. Some more links, you might find interesting:
+
+- **AHK2PremiereCEP**, another utility tool from me. It helps you connect authotkey with the Adobe Premiere CEP scripting environment. Very helpful tool for video production.
+- Taran Van Hermet, a macro specialist: https://www.youtube.com/user/TaranVH
+- And my own twitch channel, where I develop with these techniques, sometimes: https://www.twitch.tv/skate702
+
+If there are more questions, you can contact me on [Twitter](https://twitter.com/skate702) or via [mail](mailto:hi@sebinside.de).
