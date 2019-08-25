@@ -37,6 +37,8 @@ You can include your own AHK-scripts there and define custom functionality in a 
 
 ## Installation
 
+*Note: Requires Windows 10*
+
 1. Install [AutoHotkey](https://www.autohotkey.com/). Well... if you're reading this, you will probably already have.
 2. Install node. You can download it from https://nodejs.org/. Make sure that node is in the PATH-variable and available from the console. You can test this by executing `node -v`
 3. Clone or download this repository. You can also just head over to [releases](https://github.com/sebinside/HotkeylessAHK/releases)
