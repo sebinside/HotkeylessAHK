@@ -13,13 +13,8 @@ export class HotkeylessAHKServer {
      * Handles the subscriber aka. redirecting ahk script
      */
     private subscriberFunction: RequestHandler = (req, res) => {
-        if (this.pendingResult !== null) {
-            console.error("Already subscribed an AHK script with '/subscribe'. Please check your processes!");
-            res.send("");
-        } else {
-            this.pendingResult = res;
-            console.log("Received subscriber.");
-        }
+        this.pendingResult = res;
+        console.log("Received subscriber.");
     };
 
     /**

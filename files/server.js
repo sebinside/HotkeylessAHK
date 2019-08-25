@@ -1,5 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var express = require("express");
 var HotkeylessAHKServer = /** @class */ (function () {
     function HotkeylessAHKServer(serverPort) {
@@ -13,14 +13,8 @@ var HotkeylessAHKServer = /** @class */ (function () {
          * Handles the subscriber aka. redirecting ahk script
          */
         this.subscriberFunction = function (req, res) {
-            if (_this.pendingResult !== null) {
-                console.error("Already subscribed an AHK script with '/subscribe'. Please check your processes!");
-                res.send("");
-            }
-            else {
-                _this.pendingResult = res;
-                console.log("Received subscriber.");
-            }
+            _this.pendingResult = res;
+            console.log("Received subscriber.");
         };
         /**
          * Handles the sender aka the caller e.g. a stream deck

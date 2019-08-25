@@ -9,7 +9,7 @@ SetupServer() {
 
 RunClient() {
     shell := ComObjCreate("WScript.Shell")
-    server := "curl http://localhost:42800/subscribe"
+    server := "curl http://localhost:42800/subscribe -m 25"
 
     ; Go in subscriber mode and wait for commands.
     ; You can trigger these commands by calling "localhost:42800/send/commandNameGoesHere"
