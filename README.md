@@ -29,7 +29,7 @@ HelloWorld() {
 }
 ```
 
-You can include your own AHK-scripts there and define custom functionality in a nice and clean way - without loosing to much performance. You can use your web browser, shortcuts or utility hardware like the [Stream Deck](https://www.elgato.com/gaming/stream-deck), like this:
+You can include your own AHK-scripts there and define custom functionality in a nice and clean way - without loosing too much performance. You can use your web browser, shortcuts or utility hardware like the [Stream Deck](https://www.elgato.com/gaming/stream-deck), like this:
 
 ![Stream Deck example](streamdeck.PNG)
 
@@ -39,7 +39,7 @@ You can include your own AHK-scripts there and define custom functionality in a 
 
 1. Install [AutoHotkey](https://www.autohotkey.com/). Well... if you're reading this, you will probably already have.
 2. Install node. You can download it from https://nodejs.org/. Make sure that node is in the PATH-variable and available from the console. You can test this by executing `node -v`
-3. Clone or download this repository. You can also just head over to [releases](https://github.com/sebinside/HotkeylessAHK)
+3. Clone or download this repository. You can also just head over to [releases](https://github.com/sebinside/HotkeylessAHK/releases)
 4. Open a console window and enter the `files` folder. Then, execute `npm install` to install all web server dependencies.
 5. Start *Hotkeyless Authotkey* by executing the `HotkeylessAHK.ahk`-file.
 6. Open your web browser and navigate to `http://localhost:42800/send/HelloWorld`. This should open a message dialog, triggered from the `HotkeylessAHK.ahk`-file.
@@ -64,7 +64,7 @@ To terminate the running tool, call `http://localhost:42800/send/kill`.
 
 This is yet another small tool to enhance the power of AHK. Some more links, you might find interesting:
 
-- **AHK2PremiereCEP**, another utility tool from me. It helps you connect authotkey with the Adobe Premiere CEP scripting environment. Very helpful tool for video production.
+- **[AHK2PremiereCEP](https://github.com/sebinside/AHK2PremiereCEP)**, another utility tool from me. It helps you connect authotkey with the Adobe Premiere CEP scripting environment. Very helpful tool for video production.
 - Taran Van Hermet, a macro specialist: https://www.youtube.com/user/TaranVH
 - And my own twitch channel, where I develop with these techniques, sometimes: https://www.twitch.tv/skate702
 
