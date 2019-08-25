@@ -4,7 +4,7 @@ SetupServer() {
     WinHide % "ahk_id " DllCall("GetConsoleWindow", "ptr")
 
     ; Starts the server using node js
-    Run node ""index.js""
+    Run node ""files/index.js""
 }
 
 RunClient() {
@@ -17,18 +17,17 @@ RunClient() {
         exec := shell.Exec(ComSpec " /C " server)
         command := exec.StdOut.ReadAll()
         
-        ; TODO: Change using func()
-
-        ; Your custom code goes here!
-        if(command == "helloworld") {
-            MsgBox, Hello World
-
-        } else if(command == "test123") {
-            MsgBox, working  
-
-        } else if(command == "kill") {
+        ; Special case: kill. Reserved to terminate the script.
+        if(command == "kill") {
             Run curl ""http://localhost:42800/kill""
-            break
+            Exit
+        } else {
+            ; Calls a custom defined function in any included script.
+            ; Does ignore wrong calls (not defined functions).
+            fn := Func(command)
+            if(fn != 0) {
+                %fn%()
+            }
         }
     }
 }
