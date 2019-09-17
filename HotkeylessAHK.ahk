@@ -5,6 +5,7 @@ Menu, Tray, Icon, shell32.dll, 147
 #singleinstance force
 
 #Include files/lib.ahk
+#Include C:\Users\Sebastian\Drive\autohotkey\StreamDeckFunctions.ahk
 
 ; HotkeylessAHK by sebinside
 ; ALL INFORMATION: https://github.com/sebinside/HotkeylessAHK
@@ -17,11 +18,3 @@ RunClient()
 ; Your custom functions go here!
 ; You can then call them by using the URL "localhost:42800/send/yourFunctionName"
 ; The funciton name "kill" is reserved to end the script execution.
-
-HelloWorld() {
-    MsgBox, Hello World
-}
-
-OpenExplorer() {
-    Run, explorer.exe
-}
