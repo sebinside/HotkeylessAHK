@@ -1,0 +1,40 @@
+{
+    "Actions": [
+      {
+        "Icon": "resources/actionIcon", 
+        "Name": "AutoHotkey", 
+        "States": [
+          {
+            "Image": "resources/actionDefaultImage",
+            "TitleAlignment": "bottom",
+            "FontSize": "10"
+          }
+        ], 
+        "SupportedInMultiActions": true,
+        "UUID": "de.tobimori.streamdeck.hotkeylessahk.action"
+      }
+    ], 
+    "SDKVersion": 2,
+    "Author": "sebinside; tobimori", 
+    "CodePath": "plugin/main.html", 
+    "Description": "Trigger AutoHotkey functions without using a spare hotkey, on your Stream Deck!", 
+    "Name": "HotkeylessAHK", 
+    "Icon": "resources/pluginIcon", 
+    "PropertyInspectorPath": "pi/main_pi.html",
+    "URL": "https://github.com/sebinside/HotkeylessAHK", 
+    "Version": "1.0",
+    "OS": [
+      {
+          "Platform": "mac", 
+          "MinimumVersion" : "10.11"
+      },
+      {
+          "Platform": "windows", 
+          "MinimumVersion" : "10"
+      }
+    ],
+    "Software": 
+      {
+          "MinimumVersion" : "4.1"
+      }
+  }

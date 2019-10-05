@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>de.tobimori.streamdeck.hotkeylessahk.pi</title>
+    <link rel="stylesheet" href="sdpi.css">
+    <script src="main_pi.js"></script>
+</head>
+
+<body>
+<div class="sdpi-wrapper hidden">
+    <div class="sdpi-item">
+        <div class="sdpi-item-label">Function Name</div>
+        <input class="sdpi-item-value" id="function" value="" onchange="update()">
+    </div>
+    <details>
+        <summary>Advanced settings</summary>
+        <div class="sdpi-item">
+            <div class="sdpi-item-label">IP address</div>
+            <input class="sdpi-item-value" pattern="\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}" id="ip" value="" onchange="update()">
+        </div>
+        <div class="sdpi-item">
+            <div class="sdpi-item-label">Port</div>
+            <input class="sdpi-item-value" pattern="^[0-9]*$" id="port" value="" onchange="update()">
+        </div>
+    </details>
+    <div class="sdpi-item">
+        <button class="sdpi-item-value" onclick="openPage('github.com/sebinside/hotkeylessahk')">GitHub</button>
+    </div>
+</div>
+</body>
+
+</html>
