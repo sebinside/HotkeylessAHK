@@ -22,12 +22,8 @@
     "Icon": "resources/pluginIcon", 
     "PropertyInspectorPath": "pi/main_pi.html",
     "URL": "https://github.com/sebinside/HotkeylessAHK", 
-    "Version": "1.0",
+    "Version": "1.0.1",
     "OS": [
-      {
-          "Platform": "mac", 
-          "MinimumVersion" : "10.11"
-      },
       {
           "Platform": "windows", 
           "MinimumVersion" : "10"
