@@ -29,11 +29,7 @@ HelloWorld() {
 }
 ```
 
-You can include your own AHK-scripts there and define custom functionality in a nice and clean way - without loosing too much performance. You can use your web browser, shortcuts or utility hardware like the [Stream Deck](https://www.elgato.com/gaming/stream-deck), like this:
-
-![Stream Deck example](streamdeck.PNG)
-
-*(Elgato does not provide a language option? Someone please upload an english version, lol)*
+You can include your own AHK-scripts there and define custom functionality in a nice and clean way - without loosing too much performance. You can use your web browser, shortcuts or utility hardware like the [Stream Deck](https://www.elgato.com/gaming/stream-deck), as explained [here](###streamdeck).
 
 ## Installation
 
@@ -61,6 +57,17 @@ Once installed, the usage of **Hotkeyless AutoHotkey** is easy: Write your own m
 The endpoint is always the same: `http://localhost:42800/send/YourFunctionNameGoesHere`.
 
 To terminate the running tool, call `http://localhost:42800/send/kill`.
+
+### Stream Deck
+
+To make the process of using **Hotkeyless AutoHotkey** with your Stream Deck more easily, you can use a special plugin provided [here](streamdeck/de.tobimori.streamdeck.hotkeylessahk.streamDeckPlugin).
+
+Installation is simple:
+Download the file and execute it. After an succesful installation, you'll find an AutoHotkey action in the actions list, which you can drag to the canvas and simply set it up in the property inspector.
+
+![Stream Deck UI](streamdeck.PNG)
+
+The plugin only takes over the calling part, meaning that you still need to set up ""Hotkeyless AutoHotkey** as explained in the [Installation part](##installation) of this readme.
 
 ## More
 
