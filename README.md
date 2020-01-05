@@ -33,8 +33,6 @@ You can include your own AHK-scripts there and define custom functionality in a 
 
 ![Stream Deck example](streamdeck.PNG)
 
-*(Elgato does not provide a language option? Someone please upload an english version, lol)*
-
 ## Installation
 
 *Note: Requires Windows 10*
