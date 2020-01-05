@@ -41,7 +41,7 @@ Also, you can include your AHK-scripts and define custom functionality in a nice
 2. Install node. You can download it from https://nodejs.org/. Make sure that node is in the PATH-variable and available from the console. You can test this by executing `node -v`
 3. Clone or download this repository. You can also just head over to [releases](https://github.com/sebinside/HotkeylessAHK/releases)
 4. Open a console window and enter the `files` folder. Then, execute `npm install` to install all web server dependencies.
-5. Start *Hotkeyless Authotkey* by executing the `HotkeylessAHK.ahk`-file.
+5. Start *Hotkeyless AutoHotkey* by executing the `HotkeylessAHK.ahk`-file.
 6. Open your web browser and navigate to `http://localhost:42800/send/HelloWorld`. This should open a message dialog, triggered by the `HotkeylessAHK.ahk`-file.
 7. Now, you're ready to go.
 
@@ -64,7 +64,7 @@ To terminate the running tool, call `http://localhost:42800/send/kill`.
 
 This is yet another small tool to enhance the power of AHK. Some more links, you might find interesting:
 
-- **[AHK2PremiereCEP](https://github.com/sebinside/AHK2PremiereCEP)**, another utility tool from me which helps you connect Authotkey with the Adobe Premiere CEP scripting environment. A very helpful tool for video production.
+- **[AHK2PremiereCEP](https://github.com/sebinside/AHK2PremiereCEP)**, another utility tool from me which helps you connect AutoHotkey with the Adobe Premiere CEP scripting environment. A very helpful tool for video production.
 - Taran Van Hemert, a macro specialist: https://www.youtube.com/user/TaranVH
 - And my own twitch channel, where I develop with these techniques, sometimes: https://www.twitch.tv/skate702
 
