@@ -67,7 +67,7 @@ To terminate the running tool, call `http://localhost:42800/send/kill`.
 This is yet another small tool to enhance the power of AHK. Some more links, you might find interesting:
 
 - **[AHK2PremiereCEP](https://github.com/sebinside/AHK2PremiereCEP)**, another utility tool from me. It helps you connect authotkey with the Adobe Premiere CEP scripting environment. Very helpful tool for video production.
-- Taran Van Hermet, a macro specialist: https://www.youtube.com/user/TaranVH
+- Taran Van Hemert, a macro specialist: https://www.youtube.com/user/TaranVH
 - And my own twitch channel, where I develop with these techniques, sometimes: https://www.twitch.tv/skate702
 
 If there are more questions, you can contact me on [Twitter](https://twitter.com/skate702) or via [mail](mailto:hi@sebinside.de).
