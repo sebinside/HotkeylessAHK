@@ -1,0 +1,49 @@
+{
+  "Actions": [
+    {
+      "Icon": "img/actionIcon",
+      "Name": "Action",
+      "States": [
+        {
+          "Image": "img/actionDefaultImage"
+        }
+      ],
+      "SupportedInMultiActions": true,
+      "Tooltip": "TODO",
+      "UUID": "de.sebinside.hotkeylessahk.action"
+    },
+    {
+      "Icon": "img/actionIcon",
+      "Name": "Restart",
+      "States": [
+        {
+          "Image": "img/actionDefaultImage"
+        }
+      ],
+      "SupportedInMultiActions": true,
+      "Tooltip": "TODO",
+      "UUID": "de.sebinside.hotkeylessahk.restart"
+    }
+  ],
+  "SDKVersion": 2,
+  "Name": "HotkeylessAHK",
+  "Author": "sebinside",
+  "Description": "TODO",
+  "Icon": "img/pluginIcon",
+  "Category": "HotkeylessAHK",
+  "CategoryIcon": "img/pluginIcon",
+  "CodePath": "src/index.html",
+  "PropertyInspectorPath": "src/pi.html",
+  "URL": "https://github.com/sebinside/HotkeylessAHK",
+  "Version": "1.4",
+  "OS": [
+    {
+      "Platform": "windows",
+      "MinimumVersion": "10"
+    }
+  ],
+  "Software": 
+    {
+        "MinimumVersion" : "4.1"
+    }
+}
