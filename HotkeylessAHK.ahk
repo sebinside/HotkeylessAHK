@@ -5,7 +5,7 @@ Menu, Tray, Icon, shell32.dll, 147
 #singleinstance force
 
 #Include files/lib.ahk
-#Include D:\Drive\autohotkey\StreamDeckFunctions.ahk
+#Include D:\Drive\autohotkey\source\lib\StreamDeckFunctions.ahk
 
 ; HotkeylessAHK by sebinside
 ; ALL INFORMATION: https://github.com/sebinside/HotkeylessAHK
