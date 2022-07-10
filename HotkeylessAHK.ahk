@@ -17,4 +17,4 @@ RunClient()
 
 ; Your custom functions go here!
 ; You can then call them by using the URL "localhost:42800/send/yourFunctionName"
-; The funciton names "kill" and "list" are reserved.
+; The funciton name "kill" is reserved.

@@ -11,6 +11,10 @@ RunClient() {
     shell := ComObjCreate("WScript.Shell")
     server := "curl http://localhost:42800/subscribe -m 25"
 
+    allFunctions := GetAvailableFunctions()
+    sendListToServer := "curl http://localhost:42800/setList/" . allFunctions
+    shell.Exec(ComSpec " /C " sendListToServer)
+
     ; Go in subscriber mode and wait for commands.
     ; You can trigger these commands by calling "localhost:42800/send/commandNameGoesHere"
     Loop {
@@ -21,8 +25,6 @@ RunClient() {
         if(command == "kill") {
             Run curl ""http://localhost:42800/kill""
             Exit
-        } else if (command == "list") {
-            GetAvailableFunctions()
         } else {
             CallCustomFunctionByName(command)
         }
@@ -48,7 +50,7 @@ GetAvailableFunctions() {
         if((key != "__Class") && (GetFunctionParameterCount(key) <= 1)) {
             BaseMembers .= key ","	
         }
-    msgbox, % BaseMembers
+    return %BaseMembers%
 }
 
 GetFunctionParameterCount(functionName) {

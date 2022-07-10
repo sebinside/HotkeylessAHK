@@ -10,6 +10,7 @@ var HotkeylessAHKServer = /** @class */ (function () {
         this.app = express();
         this.router = express.Router();
         this.pendingResult = null;
+        this.list = "";
         /**
          * Handles the subscriber aka. redirecting ahk script
          */
@@ -33,6 +34,15 @@ var HotkeylessAHKServer = /** @class */ (function () {
                 res.send("failure");
             }
         };
+        this.setListFunction = function (req, res) {
+            var list = req.params.list;
+            // This is required due to the last comma added in the ahk code
+            _this.list = list.substring(0, list.length - 1);
+            res.send("success");
+        };
+        this.getListFunction = function (req, res) {
+            res.send(_this.list);
+        };
         /**
          * Stops the node process
          */
@@ -46,6 +56,8 @@ var HotkeylessAHKServer = /** @class */ (function () {
         this.router.get("/subscribe", this.subscriberFunction);
         this.router.get("/send/:command", this.sendFunction);
         this.router.get("/kill", this.killFunction);
+        this.router.get("/setList/:list", this.setListFunction);
+        this.router.get("/list", this.getListFunction);
         // Start server
         this.app.use('/', this.router);
         this.app.listen(this.serverPort);
