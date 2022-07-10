@@ -21,13 +21,20 @@ RunClient() {
         if(command == "kill") {
             Run curl ""http://localhost:42800/kill""
             Exit
+        } else if (command == "list") {
+            MsgBox, "List me baby!"
         } else {
-            ; Calls a custom defined function in any included script.
-            ; Does ignore wrong calls (not defined functions).
-            fn := Func(command)
-            if(fn != 0) {
-                %fn%()
-            }
+            CallCustomFunctionByName(command)
         }
+    }
+}
+
+CallCustomFunctionByName(functionName) {
+    CustomFunctionsInstance := New CustomFunctions
+    CustomFunctionsFunctionName := "CustomFunctions." . functionName
+
+    fn := Func(CustomFunctionsFunctionName)
+    if(fn != 0) {
+        CustomFunctionsInstance[functionName]()
     }
 }
