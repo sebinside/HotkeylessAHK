@@ -4,7 +4,7 @@ SetupServer() {
     WinHide % "ahk_id " DllCall("GetConsoleWindow", "ptr")
 
     ; Starts the server using node js
-    Run node ""files/index.js""
+    Run node ""files/dist/index.js""
 }
 
 RunClient() {
@@ -22,7 +22,7 @@ RunClient() {
             Run curl ""http://localhost:42800/kill""
             Exit
         } else if (command == "list") {
-            MsgBox, "List me baby!"
+            GetAvailableFunctions()
         } else {
             CallCustomFunctionByName(command)
         }
@@ -31,10 +31,28 @@ RunClient() {
 
 CallCustomFunctionByName(functionName) {
     CustomFunctionsInstance := New CustomFunctions
-    CustomFunctionsFunctionName := "CustomFunctions." . functionName
-
-    fn := Func(CustomFunctionsFunctionName)
-    if(fn != 0) {
+    if(IsFunctionAvailable(functionName)) {
         CustomFunctionsInstance[functionName]()
     }
+}
+
+IsFunctionAvailable(functionName) {
+    CustomFunctionsFunctionName := "CustomFunctions." . functionName
+    fn := Func(CustomFunctionsFunctionName)
+    return (fn != 0)
+}
+
+GetAvailableFunctions() {
+    CustomFunctionsInstance := New CustomFunctions
+    For key,value in CustomFunctionsInstance.Base
+        if((key != "__Class") && (GetFunctionParameterCount(key) <= 1)) {
+            BaseMembers .= key ","	
+        }
+    msgbox, % BaseMembers
+}
+
+GetFunctionParameterCount(functionName) {
+    CustomFunctionsFunctionName := "CustomFunctions." . functionName
+    fn := Func(CustomFunctionsFunctionName)
+    return fn.MinParams
 }

@@ -4,7 +4,7 @@ SetWorkingDir %A_ScriptDir%
 Menu, Tray, Icon, shell32.dll, 147
 #singleinstance force
 
-#Include files/lib.ahk
+#Include files\lib.ahk
 #Include D:\Drive\autohotkey\source\lib\StreamDeckFunctions.ahk
 
 ; HotkeylessAHK by sebinside
@@ -17,4 +17,4 @@ RunClient()
 
 ; Your custom functions go here!
 ; You can then call them by using the URL "localhost:42800/send/yourFunctionName"
-; The funciton name "kill" is reserved to end the script execution.
+; The funciton names "kill" and "list" are reserved.

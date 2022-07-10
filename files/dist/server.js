@@ -1,5 +1,6 @@
 "use strict";
 exports.__esModule = true;
+exports.HotkeylessAHKServer = void 0;
 var express = require("express");
 var HotkeylessAHKServer = /** @class */ (function () {
     function HotkeylessAHKServer(serverPort) {
@@ -25,7 +26,7 @@ var HotkeylessAHKServer = /** @class */ (function () {
                 _this.pendingResult.send(command);
                 _this.pendingResult = null;
                 res.send("success");
-                console.log("Send command: " + command);
+                console.log("Send command: ".concat(command));
             }
             else {
                 console.error("No subscribing process registered. Please call '/subscribe' first!");
@@ -48,7 +49,7 @@ var HotkeylessAHKServer = /** @class */ (function () {
         // Start server
         this.app.use('/', this.router);
         this.app.listen(this.serverPort);
-        console.log("Server running on port " + this.serverPort + ".");
+        console.log("Server running on port ".concat(this.serverPort, "."));
         console.log("Please use the '/subscribe' endpoint first!");
     };
     return HotkeylessAHKServer;
