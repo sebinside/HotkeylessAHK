@@ -13,7 +13,7 @@ export class HotkeylessAHKServer {
     /**
      * Handles the subscriber aka. redirecting ahk script
      */
-    private subscriberFunction: RequestHandler = (req, res) => {
+    private subscribe: RequestHandler = (req, res) => {
         this.pendingResult = res;
         console.log("Received subscriber.");
     };
@@ -21,7 +21,7 @@ export class HotkeylessAHKServer {
     /**
      * Handles the sender aka the caller e.g. a stream deck
      */
-    private sendFunction: RequestHandler = (req, res) => {
+    private send: RequestHandler = (req, res) => {
         if (this.pendingResult !== null) {
             const command = req.params.command;
             this.pendingResult.send(command);
@@ -34,7 +34,7 @@ export class HotkeylessAHKServer {
         }
     };
 
-    private setListFunction: RequestHandler = (req, res) => {
+    private register: RequestHandler = (req, res) => {
         const list = req.params.list as String;
 
         // This is required due to the last comma added in the ahk code
@@ -42,7 +42,7 @@ export class HotkeylessAHKServer {
         res.send("success");
     };
 
-    private getListFunction: RequestHandler = (req, res) => {
+    private getList: RequestHandler = (req, res) => {
         res.send(this.list);
     }
 
@@ -50,29 +50,29 @@ export class HotkeylessAHKServer {
     /**
      * Stops the node process
      */
-    private killFunction: RequestHandler = (req, res) => {
-    console.log("Shutting down server...");
-    process.exit(0);
-};
+    private kill: RequestHandler = (req, res) => {
+        console.log("Shutting down server...");
+        process.exit(0);
+    };
 
-constructor(private serverPort: number) {
-}
+    constructor(private serverPort: number) {
+    }
 
-setup() {
-    console.log("Starting server...");
+    setup() {
+        console.log("Starting server...");
 
-    this.router.get("/subscribe", this.subscriberFunction);
-    this.router.get("/send/:command", this.sendFunction);
+        this.router.get("/subscribe", this.subscribe);
+        this.router.get("/send/:command", this.send);
 
-    this.router.get("/kill", this.killFunction);
+        this.router.get("/kill", this.kill);
 
-    this.router.get("/setList/:list", this.setListFunction)
-    this.router.get("/list", this.getListFunction)
+        this.router.get("/register/:list", this.register)
+        this.router.get("/list", this.getList)
 
-    // Start server
-    this.app.use('/', this.router);
-    this.app.listen(this.serverPort);
-    console.log(`Server running on port ${this.serverPort}.`);
-    console.log("Please use the '/subscribe' endpoint first!");
-}
+        // Start server
+        this.app.use('/', this.router);
+        this.app.listen(this.serverPort);
+        console.log(`Server running on port ${this.serverPort}.`);
+        console.log("Please use the '/subscribe' endpoint first!");
+    }
 }

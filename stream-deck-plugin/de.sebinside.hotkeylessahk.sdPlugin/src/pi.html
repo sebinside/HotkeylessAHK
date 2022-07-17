@@ -5,20 +5,32 @@
     <meta charset="utf-8" />
     <title>HotkeylessAHK Property Inspector</title>
     <link rel="stylesheet" href="lib/sdpi.css">
+    <style>
+        .select, option {   
+            font-weight: normal !important;
+        }
+    </style>
 </head>
 
 <body>
     <div class="sdpi-wrapper">
         <div type="select" class="sdpi-item">
-            <div class="sdpi-item-label">Change Value</div>
-            <select class="sdpi-item-value select setvalueSelect">
-                <option selected value="TODO">TODO</option>
+            <div class="sdpi-item-label">Function</div>
+            <select class="sdpi-item-value select" id="field_function" oninput="saveSettings()">
+                <option selected value="TODO">Please wait...</option>
             </select>
 
-            <button onclick="sendValueToPlugin('k', 'v')">Send</button>
+            <button onclick="refreshFunctionList()">&#8635;</button>
         </div>
         <details>
-            TODO
+            <div class="sdpi-item">
+                <div class="sdpi-item-label">IP-Address</div>
+                <input class="sdpi-item-value" value="127.0.0.1" placeholder="e.g. 127.0.0.1" pattern="\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}" id="field_ip" oninput="saveSettings()">
+            </div>
+            <div class="sdpi-item">
+                <div class="sdpi-item-label">Port</div>
+                <input class="sdpi-item-value" value="42800" placeholder="e.g. 42800"   pattern="\d{1,5}" id="field_port" oninput="saveSettings()">
+            </div>
         </details>
     </div>
 

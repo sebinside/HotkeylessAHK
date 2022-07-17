@@ -12,7 +12,7 @@ RunClient() {
     server := "curl http://localhost:42800/subscribe -m 25"
 
     allFunctions := GetAvailableFunctions()
-    sendListToServer := "curl http://localhost:42800/setList/" . allFunctions
+    sendListToServer := "curl http://localhost:42800/register/" . allFunctions
     shell.Exec(ComSpec " /C " sendListToServer)
 
     ; Go in subscriber mode and wait for commands.
