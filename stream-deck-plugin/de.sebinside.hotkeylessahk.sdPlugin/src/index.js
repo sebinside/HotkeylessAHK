@@ -3,7 +3,7 @@ var pluginUUID = null;
 var settingsCache = {};
 
 const defaultActionId = "de.sebinside.hotkeylessahk.action";
-const restartActionId = "de.sebinside.hotkeylessahk.restart";
+const restartActionId = "de.sebinside.hotkeylessahk.kill";
 
 function connectElgatoStreamDeckSocket(inPort, inPluginUUID, inRegisterEvent, inInfo) {
     pluginUUID = inPluginUUID
@@ -35,12 +35,6 @@ function connectElgatoStreamDeckSocket(inPort, inPluginUUID, inRegisterEvent, in
             var userDesiredState = jsonPayload['userDesiredState'];
             executeAction(context, settings, coordinates, action, userDesiredState);
         }
-        else if (event == "sendToPlugin") {
-
-            // TODO: call save Settings
-            console.log("Received a call!");
-            
-        }
     };
 
     websocket.onclose = function () {
@@ -49,15 +43,26 @@ function connectElgatoStreamDeckSocket(inPort, inPluginUUID, inRegisterEvent, in
 };
 
 function executeAction(context, settings, coordinates, action, userDesiredState) {
-    console.log(action);
-}
+    const ip = settings.ip;
+    const port = settings.port;
+    const functionToCall = (action === defaultActionId) ? settings.func : "kill";
 
-function saveSettings(context, settings) {
-    var json = {
-        "event": "setSettings",
-        "context": context,
-        "payload": settings
-    };
+    const url = `http://${ip}:${port}/send/${functionToCall}`;
 
-    websocket.send(JSON.stringify(json));
+    fetch(url)
+        .then(response => {
+            var json = {
+                "event": "showOk",
+                "context": context,
+            };
+
+            websocket.send(JSON.stringify(json));
+        }).catch(() => {
+            var json = {
+                "event": "showAlert",
+                "context": context,
+            };
+
+            websocket.send(JSON.stringify(json));
+        });
 }

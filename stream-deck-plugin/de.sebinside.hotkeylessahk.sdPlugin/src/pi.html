@@ -14,9 +14,9 @@
 
 <body>
     <div class="sdpi-wrapper">
-        <div type="select" class="sdpi-item">
+        <div type="select" class="sdpi-item" id="FunctionSelector">
             <div class="sdpi-item-label">Function</div>
-            <select class="sdpi-item-value select" id="field_function" oninput="saveSettings()">
+            <select class="sdpi-item-value select" id="field_function" oninput="fetchAndSaveSettings()">
                 <option selected value="TODO">Please wait...</option>
             </select>
 
@@ -25,11 +25,11 @@
         <details>
             <div class="sdpi-item">
                 <div class="sdpi-item-label">IP-Address</div>
-                <input class="sdpi-item-value" value="127.0.0.1" placeholder="e.g. 127.0.0.1" pattern="\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}" id="field_ip" oninput="saveSettings()">
+                <input class="sdpi-item-value" value="127.0.0.1" placeholder="e.g. 127.0.0.1" pattern="\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}" id="field_ip" oninput="fetchAndSaveSettings()">
             </div>
             <div class="sdpi-item">
                 <div class="sdpi-item-label">Port</div>
-                <input class="sdpi-item-value" value="42800" placeholder="e.g. 42800"   pattern="\d{1,5}" id="field_port" oninput="saveSettings()">
+                <input class="sdpi-item-value" value="42800" placeholder="e.g. 42800"   pattern="\d{1,5}" id="field_port" oninput="fetchAndSaveSettings()">
             </div>
         </details>
     </div>

@@ -14,7 +14,7 @@
     },
     {
       "Icon": "img/actionIcon",
-      "Name": "Restart",
+      "Name": "Shutdown",
       "States": [
         {
           "Image": "img/actionDefaultImage"
@@ -22,7 +22,7 @@
       ],
       "SupportedInMultiActions": true,
       "Tooltip": "TODO",
-      "UUID": "de.sebinside.hotkeylessahk.restart"
+      "UUID": "de.sebinside.hotkeylessahk.kill"
     }
   ],
   "SDKVersion": 2,
