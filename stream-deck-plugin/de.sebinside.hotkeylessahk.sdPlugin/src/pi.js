@@ -2,12 +2,13 @@ var websocket = null,
     uuid = null,
     actionInfo = {};
 
+let settingsCache = {};
+
 let selectedFunction = "";
 
 const defaultIP = "127.0.0.1";
 const defaultPort = "42800";
 const defaultFunc = "";
-
 const defaultActionId = "de.sebinside.hotkeylessahk.action";
 const restartActionId = "de.sebinside.hotkeylessahk.kill";
 
@@ -118,6 +119,6 @@ function initDefaultSettings() {
 }
 
 // TODO: Internally store settings wtf
-// TODO: Refactor the complete code (maybe using imports for global constants?)
+// TODO: Refactor the complete code
 // TODO: Graphics!
 // TODO: Fill up manifest with real information
