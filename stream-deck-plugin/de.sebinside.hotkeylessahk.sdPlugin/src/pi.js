@@ -1,124 +1,164 @@
-var websocket = null,
-    uuid = null,
-    actionInfo = {};
+let websocket = null;
+let pluginUUID = null;
 
-let settingsCache = {};
-
-let selectedFunction = "";
-
-const defaultIP = "127.0.0.1";
-const defaultPort = "42800";
-const defaultFunc = "";
 const defaultActionId = "de.sebinside.hotkeylessahk.action";
 const restartActionId = "de.sebinside.hotkeylessahk.kill";
 
+const defaultSettings = {
+    ip: "127.0.0.1",
+    port: "42800",
+    func: ""
+}
+
+let cachedSettings = defaultSettings;
+let currentlySelectedFunction = "";
+
+
 function connectElgatoStreamDeckSocket(inPort, inUUID, inRegisterEvent, inInfo, inActionInfo) {
-    uuid = inUUID;
-    actionInfo = JSON.parse(inActionInfo);
-    websocket = new WebSocket('ws://localhost:' + inPort);
+    setupPropertyInspector(inUUID, inActionInfo);
+    setupWebSocket(inPort, inRegisterEvent, inActionInfo);
+}
 
-    if(actionInfo.action === restartActionId) {
+
+function setupPropertyInspector(inUUID, inActionInfo) {
+    pluginUUID = inUUID;
+    hideFunctionSelector(inActionInfo);
+}
+
+function hideFunctionSelector(inActionInfo) {
+    const actionId = JSON.parse(inActionInfo);
+    if (actionId.action === restartActionId) {
         document.getElementById("FunctionSelector").style.display = 'none';
-    }
-
-    websocket.onopen = function () {
-        const registerJSON = {
-            event: inRegisterEvent,
-            uuid: inUUID
-        };
-        websocket.send(JSON.stringify(registerJSON));
-
-        const getSettingsJSON = {
-            "event": "getSettings",
-            "context": inUUID
-        };
-        websocket.send(JSON.stringify(getSettingsJSON));
-    }
-
-    websocket.onmessage = function (evt) {
-        var jsonObj = JSON.parse(evt.data);
-        var event = jsonObj['event'];
-        var payload = jsonObj['payload'] || {};
-
-        if (event == "didReceiveSettings") {
-            loadSettings(payload.settings);
-        }
     }
 }
 
-function refreshFunctionList() {
-    const selectElement = document.getElementById("field_function");
-    selectElement.innerHTML = `<option selected value="${selectedFunction}">Please wait...</option>`;
-    const serverURL = getServerURL();
+function setupWebSocket(inPort, inRegisterEvent) {
+    const websocketURL = `ws://localhost:${inPort}`
+    websocket = new WebSocket(websocketURL);
 
+    websocket.onopen = () => onWebSocketOpen(inRegisterEvent);
+    websocket.onmessage = (messageEvent) => onWebSocketMessage(messageEvent);
+
+}
+
+function onWebSocketOpen(inRegisterEvent) {
+    callRegister(inRegisterEvent);
+    callGetSettings();
+}
+
+function onWebSocketMessage(messageEvent) {
+    const eventData = JSON.parse(messageEvent.data);
+    const eventType = eventData['event'];
+
+    if (eventType === "didReceiveSettings") {
+        const settings = eventData["payload"]["settings"];
+        loadSettings(settings);
+    }
+}
+
+
+function updateUI() {
+    document.getElementById("field_ip").value = cachedSettings.ip;
+    document.getElementById("field_port").value = cachedSettings.port;
+    currentlySelectedFunction = cachedSettings.func;
+
+    updateFunctionList();
+}
+
+function updateFunctionList() {
+    const infoMessage = createOptionElement(currentlySelectedFunction, true, "Please wait...");
+    updateSelectElementHTML(infoMessage);
+
+    const serverURL = generateServerURL();
     fetch(`${serverURL}/list`)
         .then(response => response.text())
         .then(data => {
-            console.log("Retrieved new function data.");
-            const availableFunctions = data.split(",");
-            let innerHTML = "";
-
-            for (let func of availableFunctions) {
-                const isSelected = func == selectedFunction ? "selected" : "";
-                innerHTML += `<option ${isSelected} value="${func}">${func}</option>`
-            }
-
-            selectElement.innerHTML = innerHTML;
+            const innerHTML = generateFunctionListHTML(data);
+            updateSelectElementHTML(innerHTML)
 
         }).catch(() => {
-            selectElement.innerHTML = `<option selected value="${selectedFunction}">An error occurred while reloading</option>`
+            const errorMessage = createOptionElement(currentlySelectedFunction, true, "An error occurred while reloading");
+            updateSelectElementHTML(errorMessage);
         });
 }
 
-function getServerURL() {
-    const protocol = "http://";
-    const ip = document.getElementById("field_ip").value;
-    const port = document.getElementById("field_port").value;
-    return `${protocol}${ip}:${port}`;
+function updateSelectElementHTML(innerHTML) {
+    const selectElement = document.getElementById("field_function");
+    selectElement.innerHTML = innerHTML;
 }
+
+function generateFunctionListHTML(data) {
+    let innerHTML = "";
+    const availableFunctions = data.split(",");
+
+    for (let func of availableFunctions) {
+        const isSelected = func == currentlySelectedFunction ? "selected" : "";
+        innerHTML += createOptionElement(func, isSelected, func);
+    }
+
+    return innerHTML;
+}
+
+function createOptionElement(value, isSelected, content) {
+    return `<option ${isSelected} value="${value}">${content}</option>`;
+}
+
 
 function fetchAndSaveSettings() {
-    const ip = document.getElementById("field_ip").value;
-    const port = document.getElementById("field_port").value;
-    const func = document.getElementById("field_function").value;
-
-    saveSettings(ip, port, func);
+    fetchSettings();
+    callSaveSettings();
 }
 
-function saveSettings(ip, port, func) {
-    var json = {
-        "event": "setSettings",
-        "context": uuid,
-        "payload": {
-            ip: ip,
-            port: port,
-            func: func
-        }
-    };
-
-    websocket.send(JSON.stringify(json));
+function fetchSettings() {
+    cachedSettings.ip = document.getElementById("field_ip").value;
+    cachedSettings.port = document.getElementById("field_port").value;
+    cachedSettings.func = document.getElementById("field_function").value;
 }
 
 function loadSettings(settings) {
     if (!settings.ip || !settings.port || !settings.func) {
-        settings.ip = defaultIP;
-        settings.port = defaultPort;
-        settings.func = defaultFunc;
-        initDefaultSettings();
+        console.log("No settings found. Init with default settings.");
+        callSaveSettings();
+    } else {
+        cachedSettings = settings;
     }
 
-    document.getElementById("field_ip").value = settings.ip;
-    document.getElementById("field_port").value = settings.port;
-    selectedFunction = settings.func;
-
-    refreshFunctionList();
+    updateUI();
 }
 
-function initDefaultSettings() {
-    saveSettings(defaultIP, defaultPort, defaultFunc);
+
+function callRegister(inRegisterEvent) {
+    const json = {
+        event: inRegisterEvent,
+        uuid: pluginUUID
+    };
+    sendJSON(json);
 }
 
-// TODO: Internally store settings wtf
-// TODO: Refactor the complete code
-// TODO: Graphics!
-// TODO: Fill up manifest with real information
+function callGetSettings() {
+    const json = {
+        "event": "getSettings",
+        "context": pluginUUID
+    };
+    sendJSON(json);
+}
+
+function callSaveSettings() {
+    var json = {
+        "event": "setSettings",
+        "context": pluginUUID,
+        "payload": cachedSettings
+    };
+    sendJSON(json);
+}
+
+
+function sendJSON(json) {
+    websocket.send(JSON.stringify(json));
+}
+
+function generateServerURL() {
+    fetchSettings();
+    const protocol = "http://";
+    return `${protocol}${cachedSettings.ip}:${cachedSettings.port}`;
+}
