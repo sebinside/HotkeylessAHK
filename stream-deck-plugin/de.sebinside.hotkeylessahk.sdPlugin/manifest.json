@@ -13,11 +13,11 @@
       "UUID": "de.sebinside.hotkeylessahk.action"
     },
     {
-      "Icon": "img/actionIcon",
+      "Icon": "img/shutdownIcon",
       "Name": "Shutdown",
       "States": [
         {
-          "Image": "img/actionDefaultImage"
+          "Image": "img/shutdownDefaultImage"
         }
       ],
       "SupportedInMultiActions": true,
