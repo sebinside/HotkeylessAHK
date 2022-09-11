@@ -9,7 +9,7 @@
         }
       ],
       "SupportedInMultiActions": true,
-      "Tooltip": "TODO",
+      "Tooltip": "Triggers the specified function. Requires a running HotkeylessAHK instance.",
       "UUID": "de.sebinside.hotkeylessahk.action"
     },
     {
@@ -21,14 +21,14 @@
         }
       ],
       "SupportedInMultiActions": true,
-      "Tooltip": "TODO",
+      "Tooltip": "Terminates the running HotkeylessAHK instance.",
       "UUID": "de.sebinside.hotkeylessahk.kill"
     }
   ],
   "SDKVersion": 2,
   "Name": "HotkeylessAHK",
   "Author": "sebinside",
-  "Description": "TODO",
+  "Description": "Enables calling AutoHotkey functions by simply pressing a button.",
   "Icon": "img/pluginIcon",
   "Category": "HotkeylessAHK",
   "CategoryIcon": "img/pluginIcon",
