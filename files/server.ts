@@ -1,5 +1,5 @@
 import * as express from "express";
-import {RequestHandler, Response} from "express";
+import { RequestHandler, Response } from "express";
 
 export class HotkeylessAHKServer {
 
@@ -8,11 +8,12 @@ export class HotkeylessAHKServer {
     private router = express.Router();
 
     private pendingResult: Response = null;
+    private list = "";
 
     /**
      * Handles the subscriber aka. redirecting ahk script
      */
-    private subscriberFunction: RequestHandler = (req, res) => {
+    private subscribe: RequestHandler = (req, res) => {
         this.pendingResult = res;
         console.log("Received subscriber.");
     };
@@ -20,7 +21,7 @@ export class HotkeylessAHKServer {
     /**
      * Handles the sender aka the caller e.g. a stream deck
      */
-    private sendFunction: RequestHandler = (req, res) => {
+    private send: RequestHandler = (req, res) => {
         if (this.pendingResult !== null) {
             const command = req.params.command;
             this.pendingResult.send(command);
@@ -33,10 +34,23 @@ export class HotkeylessAHKServer {
         }
     };
 
+    private register: RequestHandler = (req, res) => {
+        const list = req.params.list as String;
+
+        // This is required due to the last comma added in the ahk code
+        this.list = list.substring(0, list.length - 1);
+        res.send("success");
+    };
+
+    private getList: RequestHandler = (req, res) => {
+        res.send(this.list);
+    }
+
+
     /**
      * Stops the node process
      */
-    private killFunction: RequestHandler = (req, res) => {
+    private kill: RequestHandler = (req, res) => {
         console.log("Shutting down server...");
         process.exit(0);
     };
@@ -47,11 +61,13 @@ export class HotkeylessAHKServer {
     setup() {
         console.log("Starting server...");
 
-        this.router.get("/subscribe", this.subscriberFunction);
+        this.router.get("/subscribe", this.subscribe);
+        this.router.get("/send/:command", this.send);
 
-        this.router.get("/send/:command", this.sendFunction);
+        this.router.get("/kill", this.kill);
 
-        this.router.get("/kill", this.killFunction);
+        this.router.get("/register/:list", this.register)
+        this.router.get("/list", this.getList)
 
         // Start server
         this.app.use('/', this.router);

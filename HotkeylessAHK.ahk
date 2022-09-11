@@ -4,24 +4,28 @@ SetWorkingDir %A_ScriptDir%
 Menu, Tray, Icon, shell32.dll, 147
 #singleinstance force
 
-#Include files/lib.ahk
+#Include files\lib.ahk
 
 ; HotkeylessAHK by sebinside
 ; ALL INFORMATION: https://github.com/sebinside/HotkeylessAHK
 ; Make sure that you have downloaded everything, especially the "/files" folder.
-; Make sure that you have nodeJS installed and available in the PATH variable.
+; Make sure that you have NodeJS installed and available in the PATH variable.
 
 SetupServer()
 RunClient()
 
-; Your custom functions go here!
+; Your custom functions go into the 'CustomFunctions' class.
 ; You can then call them by using the URL "localhost:42800/send/yourFunctionName"
-; The funciton name "kill" is reserved to end the script execution.
+; The function name "kill" is reserved.
 
-HelloWorld() {
-    MsgBox, Hello World
-}
+Class CustomFunctions {
 
-OpenExplorer() {
-    Run, explorer.exe
+    HelloWorld() {
+        MsgBox, Hello World
+    }
+
+    OpenExplorer() {
+        Run, explorer.exe
+    }
+
 }
