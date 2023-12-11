@@ -1,60 +1,58 @@
 SetupServer() {
     ; This snippet disables flashing console windows
     DllCall("AllocConsole")
-    WinHide % "ahk_id " DllCall("GetConsoleWindow", "ptr")
+    WinHide("ahk_id " DllCall("GetConsoleWindow", "ptr"))
 
     ; Starts the server using node js
-    Run node ""files/dist/index.js""
+    Run("node `"`"files/dist/index.js`"`"")
 }
 
 RunClient() {
-    shell := ComObjCreate("WScript.Shell")
+    shell := ComObject("WScript.Shell")
     server := "curl http://localhost:42800/subscribe -m 25"
 
     allFunctions := GetAvailableFunctions()
     sendListToServer := "curl http://localhost:42800/register/" . allFunctions
-    shell.Exec(ComSpec " /C " sendListToServer)
+    shell.Exec(A_ComSpec " /C " sendListToServer)
 
     ; Go in subscriber mode and wait for commands.
     ; You can trigger these commands by calling "localhost:42800/send/commandNameGoesHere"
-    Loop {
-        exec := shell.Exec(ComSpec " /C " server)
+    Loop{
+        exec := shell.Exec(A_ComSpec " /C " server)
         command := exec.StdOut.ReadAll()
-        
-        ; Special case: kill. Reserved to terminate the script.
-        if(command == "kill") {
-            Run curl ""http://localhost:42800/kill""
-            Exit
-        } else {
-            CallCustomFunctionByName(command)
-        }
+        CallCustomFunctionByName(command)
     }
 }
 
 CallCustomFunctionByName(functionName) {
-    CustomFunctionsInstance := New CustomFunctions
-    if(IsFunctionAvailable(functionName)) {
-        CustomFunctionsInstance[functionName]()
+    methodString := "CustomFunctions." . functionName
+    method := GetMethodFromString(methodString)
+    if (functionName != "") {
+        method()  ; Execute the method if it's not null
     }
 }
+; Adapted GetMethodFromString function
+GetMethodFromString(str) {
+    ; Split the string by '.'
+    arr := StrSplit(str, '.')
+    method := arr.Pop()
 
-IsFunctionAvailable(functionName) {
-    CustomFunctionsFunctionName := "CustomFunctions." . functionName
-    fn := Func(CustomFunctionsFunctionName)
-    return (fn != 0)
+    ; Instantiate the CustomFunctions class
+    obj := CustomFunctions()
+
+    ; Return a bound method
+    return ObjBindMethod(obj, method)
 }
 
 GetAvailableFunctions() {
-    CustomFunctionsInstance := New CustomFunctions
-    For key,value in CustomFunctionsInstance.Base
-        if((key != "__Class") && (GetFunctionParameterCount(key) <= 1)) {
-            BaseMembers .= key ","	
+    CustomFunctionsInstance := CustomFunctions()
+    BaseMembers := ""  ; Initialize the variable to ensure it's not undefined
+    for key in CustomFunctionsInstance.Base.OwnProps() {
+        if CustomFunctionsInstance.Base.HasMethod(key) {
+            func := CustomFunctionsInstance.Base.GetMethod(key)
+            ;if (func.MinParams <= 1) ; used to use this, tbh i dont know why i need this, if it is needed then just moved the "BaseMembers .= key . "," so its under its check
+            BaseMembers .= key . ","
         }
-    return %BaseMembers%
-}
-
-GetFunctionParameterCount(functionName) {
-    CustomFunctionsFunctionName := "CustomFunctions." . functionName
-    fn := Func(CustomFunctionsFunctionName)
-    return fn.MinParams
+    }
+    return BaseMembers
 }

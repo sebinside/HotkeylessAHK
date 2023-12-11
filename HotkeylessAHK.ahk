@@ -1,8 +1,8 @@
-﻿#NoEnv
-SendMode Input
-SetWorkingDir %A_ScriptDir%
-Menu, Tray, Icon, shell32.dll, 147
-#singleinstance force
+﻿#Requires AutoHotkey v2.0
+SendMode("Input")
+SetWorkingDir(A_ScriptDir)
+TraySetIcon("shell32.dll","147")
+#SingleInstance force
 
 #Include files\lib.ahk
 
@@ -16,16 +16,18 @@ RunClient()
 
 ; Your custom functions go into the 'CustomFunctions' class.
 ; You can then call them by using the URL "localhost:42800/send/yourFunctionName"
-; The function name "kill" is reserved.
-
 Class CustomFunctions {
 
     HelloWorld() {
-        MsgBox, Hello World
+        MsgBox "Hello World"
     }
 
     OpenExplorer() {
-        Run, explorer.exe
+        Run "explorer.exe"
     }
 
+    kill() {
+        Run("curl `"`"http://localhost:42800/kill`"`"")
+        ExitApp
+    }
 }
