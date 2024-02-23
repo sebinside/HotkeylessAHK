@@ -1,164 +1,154 @@
-let websocket = null;
-let pluginUUID = null;
-
 const defaultActionId = "de.sebinside.hotkeylessahk.action";
 const restartActionId = "de.sebinside.hotkeylessahk.kill";
 
 const defaultSettings = {
-    ip: "127.0.0.1",
-    port: "42800",
-    func: ""
-}
+  ip: "127.0.0.1",
+  port: "42800",
+  func: "",
+  parameters: "",
+};
 
 let cachedSettings = defaultSettings;
 let currentlySelectedFunction = "";
+let websocket = null;
+let pluginUUID = null;
 
-
-function connectElgatoStreamDeckSocket(inPort, inUUID, inRegisterEvent, inInfo, inActionInfo) {
-    setupPropertyInspector(inUUID, inActionInfo);
-    setupWebSocket(inPort, inRegisterEvent, inActionInfo);
+const connectElgatoStreamDeckSocket = (inPort, inUUID, inRegisterEvent, inInfo, inActionInfo) => {
+  setupPropertyInspector(inUUID, inActionInfo);
+  setupWebSocket(inPort, inRegisterEvent, inActionInfo);
 }
 
-
-function setupPropertyInspector(inUUID, inActionInfo) {
-    pluginUUID = inUUID;
-    hideFunctionSelector(inActionInfo);
+const setupPropertyInspector = (inUUID, inActionInfo) => {
+  pluginUUID = inUUID;
+  hideFunctionSelector(inActionInfo);
 }
 
-function hideFunctionSelector(inActionInfo) {
-    const actionId = JSON.parse(inActionInfo);
-    if (actionId.action === restartActionId) {
-        document.getElementById("FunctionSelector").style.display = 'none';
+hideFunctionSelector = (inActionInfo) => {
+  const { action } = JSON.parse(inActionInfo);
+  if (action === restartActionId) {
+    document.getElementById("FunctionSelector").style.display = "none";
+    document.getElementById("ParametersSection").style.display = "none";
+    cachedSettings.func = "kill"; // This value must be set here, because if its not set then the func just defaults to ""
+  }
+}
+const setupWebSocket = (inPort, inRegisterEvent) => {
+  const websocketURL = `ws://localhost:${inPort}`;
+  websocket = new WebSocket(websocketURL);
+
+  websocket.onopen = () => onWebSocketOpen(inRegisterEvent);
+  websocket.onmessage = (messageEvent) => onWebSocketMessage(messageEvent);
+}
+
+const onWebSocketOpen = (inRegisterEvent) => {
+  callRegister(inRegisterEvent);
+  callGetSettings();
+}
+
+const onWebSocketMessage = (messageEvent) => {
+  const { event: eventType, payload: { settings } } = JSON.parse(messageEvent.data);
+
+  if (eventType === "didReceiveSettings") {
+    loadSettings(settings);
+  }
+}
+
+const updateUI = () => {
+  document.getElementById("field_ip").value = cachedSettings.ip;
+  document.getElementById("field_port").value = cachedSettings.port;
+  document.getElementById("field_parameters").value = cachedSettings.parameters;
+  currentlySelectedFunction = cachedSettings.func;
+
+  updateFunctionList();
+}
+
+const updateFunctionList = async () => {
+  const infoMessage = createOptionElement(currentlySelectedFunction, true, "Please wait...");
+  updateSelectElementHTML(infoMessage);
+
+  const serverURL = generateServerURL();
+  try {
+    const response = await fetch(`${serverURL}/list`);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
     }
+    const data = await response.json();
+    const innerHTML = generateFunctionListHTML(data);
+    updateSelectElementHTML(innerHTML);
+  } catch {
+    const errorMessage = createOptionElement(currentlySelectedFunction, true, "An error occurred while reloading");
+    updateSelectElementHTML(errorMessage);
+  }
 }
 
-function setupWebSocket(inPort, inRegisterEvent) {
-    const websocketURL = `ws://localhost:${inPort}`
-    websocket = new WebSocket(websocketURL);
-
-    websocket.onopen = () => onWebSocketOpen(inRegisterEvent);
-    websocket.onmessage = (messageEvent) => onWebSocketMessage(messageEvent);
-
+const updateSelectElementHTML = (innerHTML) => {
+  const selectElement = document.getElementById("field_function");
+  selectElement.innerHTML = innerHTML;
 }
 
-function onWebSocketOpen(inRegisterEvent) {
-    callRegister(inRegisterEvent);
-    callGetSettings();
+const generateFunctionListHTML = (data) => {
+  return data.map(({ command: func }) => {
+    const isSelected = func == currentlySelectedFunction ? "selected" : "";
+    const truncatedFunc = func.length > 24 ? `${func.substring(0, 24)}...` : func;
+    const displayFunc = truncatedFunc.replace(/[-_]/g, " ");
+    return createOptionElement(func, isSelected, displayFunc);
+  }).join('');
 }
 
-function onWebSocketMessage(messageEvent) {
-    const eventData = JSON.parse(messageEvent.data);
-    const eventType = eventData['event'];
-
-    if (eventType === "didReceiveSettings") {
-        const settings = eventData["payload"]["settings"];
-        loadSettings(settings);
-    }
+const createOptionElement = (value, isSelected, content) => {
+  return `<option ${isSelected} value="${value}">${content}</option>`;
 }
 
-
-function updateUI() {
-    document.getElementById("field_ip").value = cachedSettings.ip;
-    document.getElementById("field_port").value = cachedSettings.port;
-    currentlySelectedFunction = cachedSettings.func;
-
-    updateFunctionList();
+const fetchAndSaveSettings = () => {
+  fetchSettings();
+  callSaveSettings();
 }
 
-function updateFunctionList() {
-    const infoMessage = createOptionElement(currentlySelectedFunction, true, "Please wait...");
-    updateSelectElementHTML(infoMessage);
-
-    const serverURL = generateServerURL();
-    fetch(`${serverURL}/list`)
-        .then(response => response.text())
-        .then(data => {
-            const innerHTML = generateFunctionListHTML(data);
-            updateSelectElementHTML(innerHTML)
-
-        }).catch(() => {
-            const errorMessage = createOptionElement(currentlySelectedFunction, true, "An error occurred while reloading");
-            updateSelectElementHTML(errorMessage);
-        });
+const fetchSettings = () => {
+  cachedSettings.ip = document.getElementById("field_ip").value;
+  cachedSettings.port = document.getElementById("field_port").value;
+  cachedSettings.func = document.getElementById("field_function").value;
+  cachedSettings.parameters = document.getElementById("field_parameters").value;
 }
 
-function updateSelectElementHTML(innerHTML) {
-    const selectElement = document.getElementById("field_function");
-    selectElement.innerHTML = innerHTML;
+const loadSettings = (settings) => {
+  if (settings.ip) cachedSettings.ip = settings.ip;
+  if (settings.port) cachedSettings.port = settings.port;
+  if (settings.func) cachedSettings.func = settings.func;
+  if (settings.parameters) cachedSettings.parameters = settings.parameters;
+
+  updateUI();
 }
 
-function generateFunctionListHTML(data) {
-    let innerHTML = "";
-    const availableFunctions = data.split(",");
-
-    for (let func of availableFunctions) {
-        const isSelected = func == currentlySelectedFunction ? "selected" : "";
-        innerHTML += createOptionElement(func, isSelected, func);
-    }
-
-    return innerHTML;
+const callRegister = (inRegisterEvent) => {
+  const json = {
+    event: inRegisterEvent,
+    uuid: pluginUUID,
+  };
+  sendJSON(json);
 }
 
-function createOptionElement(value, isSelected, content) {
-    return `<option ${isSelected} value="${value}">${content}</option>`;
+const callGetSettings = () => {
+  const json = {
+    event: "getSettings",
+    context: pluginUUID,
+  };
+  sendJSON(json);
 }
 
-
-function fetchAndSaveSettings() {
-    fetchSettings();
-    callSaveSettings();
+const callSaveSettings = () => {
+  const json = {
+    event: "setSettings",
+    context: pluginUUID,
+    payload: cachedSettings,
+  };
+  sendJSON(json);
 }
 
-function fetchSettings() {
-    cachedSettings.ip = document.getElementById("field_ip").value;
-    cachedSettings.port = document.getElementById("field_port").value;
-    cachedSettings.func = document.getElementById("field_function").value;
+const sendJSON = (json) => {
+  websocket.send(JSON.stringify(json));
 }
 
-function loadSettings(settings) {
-    if (!settings.ip || !settings.port || !settings.func) {
-        console.log("No settings found. Init with default settings.");
-        callSaveSettings();
-    } else {
-        cachedSettings = settings;
-    }
-
-    updateUI();
-}
-
-
-function callRegister(inRegisterEvent) {
-    const json = {
-        event: inRegisterEvent,
-        uuid: pluginUUID
-    };
-    sendJSON(json);
-}
-
-function callGetSettings() {
-    const json = {
-        "event": "getSettings",
-        "context": pluginUUID
-    };
-    sendJSON(json);
-}
-
-function callSaveSettings() {
-    var json = {
-        "event": "setSettings",
-        "context": pluginUUID,
-        "payload": cachedSettings
-    };
-    sendJSON(json);
-}
-
-
-function sendJSON(json) {
-    websocket.send(JSON.stringify(json));
-}
-
-function generateServerURL() {
-    fetchSettings();
-    const protocol = "http://";
-    return `${protocol}${cachedSettings.ip}:${cachedSettings.port}`;
+const generateServerURL = () => {
+  fetchSettings();
+  return `http://${cachedSettings.ip}:${cachedSettings.port}`;
 }
