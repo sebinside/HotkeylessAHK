@@ -28,7 +28,6 @@ hideFunctionSelector = (inActionInfo) => {
   if (action === restartActionId) {
     document.getElementById("FunctionSelector").style.display = "none";
     document.getElementById("ParametersSection").style.display = "none";
-    cachedSettings.func = "kill"; // This value must be set here, because if its not set then the func just defaults to ""
   }
 }
 const setupWebSocket = (inPort, inRegisterEvent) => {
@@ -110,11 +109,18 @@ const fetchSettings = () => {
   cachedSettings.parameters = document.getElementById("field_parameters").value;
 }
 
-const loadSettings = (settings) => {
-  if (settings.ip) cachedSettings.ip = settings.ip;
-  if (settings.port) cachedSettings.port = settings.port;
-  if (settings.func) cachedSettings.func = settings.func;
-  if (settings.parameters) cachedSettings.parameters = settings.parameters;
+function loadSettings(settings) {
+  if (!settings.ip || !settings.port || !settings.func) {
+      console.log("No settings found. Init with default settings.");
+      updateFunctionList().then(() => {
+        fetchAndSaveSettings();
+      });
+  } else {
+      cachedSettings.ip = settings.ip;
+      cachedSettings.port = settings.port;
+      cachedSettings.func = settings.func;
+      if (settings.parameters) cachedSettings.parameters = settings.parameters;
+  }
 
   updateUI();
 }
