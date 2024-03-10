@@ -63,7 +63,9 @@ HandleCommand(command) {
 
 ; Calls a custom function by its name, passing the specified parameters
 CallCustomFunctionByName(methodName, totalParameters, params*) {
-    method := GetMethodFromString("CustomFunctions." . methodName)
+    functionClass := SubStr(methodName, 1, InStr(methodName, ".") - 1)
+    methodName := SubStr(methodName, InStr(methodName, ".") + 1)
+    method := GetMethodFromString(functionClass . "." . methodName)
     if (method)
         method.Call(params*)
 }
@@ -72,7 +74,8 @@ CallCustomFunctionByName(methodName, totalParameters, params*) {
 GetMethodFromString(str) {
     arr := StrSplit(str, '.')
     method := arr.Pop()
-    obj := CustomFunctions()
+    className := arr[1]
+    obj := %className%()
     return ObjBindMethod(obj, method)
 }
 
@@ -117,18 +120,18 @@ ParamSplit(text) {
 
 ; Retrieves a list of available functions from the CustomFunctions object
 GetAvailableFunctions() {
-    customFuncs := CustomFunctions()
-    baseMembers := ""
-    isFirst := true
+    functionClasses := ["CustomFunctions"] ; this can be expanded to allow for OTHER function classes, I.E PersonalFunctions, WorkFunctions and so on.
+    allMembers := ""
 
-    for key in customFuncs.Base.OwnProps() {
-        if customFuncs.Base.HasMethod(key) {
-            note := ""
-
-            baseMembers .= (isFirst ? "" : "`n") . key . "`n" . note
-            isFirst := false
+    for _, className in functionClasses {
+        classObj := %className%()
+        for key in classObj.Base.OwnProps() {
+            if classObj.Base.HasMethod(key) {
+                note := ""
+                allMembers .= className . "." . key . "`n" . note . "`n"
+            }
         }
     }
 
-    return baseMembers
+    return allMembers
 }
