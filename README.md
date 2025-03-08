@@ -1,4 +1,8 @@
-
+<p align="center">
+  <h3 align="center"><a href="https://github.com/sebinside/HotkeylessAHK/releases"><img src = "hotkeylessahk-logo.png"/></a><br>
+  <a href="https://github.com/sebinside/HotkeylessAHK/releases">🔗 Download Release</a></h3>
+</p>
+<p>&nbsp;</p>
 
 ## Hotkeyless AutoHotkey
 
