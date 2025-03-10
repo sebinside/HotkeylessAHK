@@ -1,0 +1,20 @@
+
+STARTNatively_Calling_AHK_file: 22459968
+STOPNatively_Calling_AHK_file : 22460046
+STARTKey_Combinations: 22461578
+STOPKey_Combinations : 22461578
+STARTHotkeyless_AutoHotkey: 22463171
+STOPHotkeyless_AutoHotkey: 22463218
+STARTNatively_Calling_AHK_file: 22463734
+STOPNatively_Calling_AHK_file : 22463812
+STARTKey_Combinations: 22465328
+STOPKey_Combinations : 22465328
+STARTHotkeyless_AutoHotkey: 22466953
+STOPHotkeyless_AutoHotkey: 22467000
+STARTNatively_Calling_AHK_file: 22467500
+STOPNatively_Calling_AHK_file : 22467578
+STARTKey_Combinations: 22469093
+STOPKey_Combinations : 22469093
+STARTHotkeyless_AutoHotkey: 22470703
+STOPHotkeyless_AutoHotkey: 22470734
+STARTHotkeyless_AutoHotkey: 22512515

@@ -1,9 +1,7 @@
-﻿#NoEnv
-SendMode Input
-SetWorkingDir %A_ScriptDir%
-Menu, Tray, Icon, shell32.dll, 147
-#singleinstance force
-
+﻿#Requires AutoHotkey v2.0
+SendMode("Input")
+SetWorkingDir(A_ScriptDir)
+#SingleInstance force
 #Include files\lib.ahk
 
 ; HotkeylessAHK by sebinside
@@ -21,11 +19,10 @@ RunClient()
 Class CustomFunctions {
 
     HelloWorld() {
-        MsgBox, Hello World
+        MsgBox "Hello, World!"
     }
 
     OpenExplorer() {
-        Run, explorer.exe
+        Run "explorer.exe"
     }
-
 }
