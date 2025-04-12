@@ -17,9 +17,9 @@ Until now, you had only *two possible solutions*:
 
 | Approach                | Delay    | Fast | Scalable |
 | ----------------------- | :------- | :--: | :------: |
-| Key combinations        | ~ 10 ms  |  ✔   |    🞭     |
-| Single AHK scripts      | ~ 73 ms |  🞭   |    ✔     |
-| *Hotkeyless AutoHotkey* | ~ 48 ms |  ✔   |    ✔     |
+| Key combinations        | ~ 10 ms  |  ✔   |    🞭    |
+| Single AHK scripts      | ~ 92 ms  |  🞭   |    ✔    |
+| *Hotkeyless AutoHotkey* | ~ 55 ms  |  ✔   |    ✔    |
 
 You can make your own *performance tests*. Just have a look at the `performance-tests`-folder!
 
