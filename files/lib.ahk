@@ -67,7 +67,12 @@ CallCustomFunctionByName(methodName, totalParameters, params*) {
     methodName := SubStr(methodName, InStr(methodName, ".") + 1)
     method := GetMethodFromString(functionClass . "." . methodName)
     if (method)
-        method.Call(params*)
+        try {
+            method.Call(params*)
+        } catch as e {
+            MsgBox "HotkeylessAHK called the method '" . methodName . "' with " . totalParameters . " parameters but received the following error: " e.message
+            throw e
+            }
 }
 
 ; Retrieves a method object from a string representation of the method
@@ -109,7 +114,7 @@ ParamSplit(text) {
             param := StrReplace(param, '"')
         }
         else {
-            param := %param%
+            param := param
         }
 
         Params.Push(param)
