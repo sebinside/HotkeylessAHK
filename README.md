@@ -8,6 +8,7 @@
 
 [![AHK Version](https://img.shields.io/badge/AHK%20Version-v2-green)](https://www.autohotkey.com/docs/v2/)
 [![Release](https://img.shields.io/github/v/release/sebinside/HotkeylessAHK)](https://github.com/sebinside/HotkeylessAHK/releases)
+[![AHK Version](https://img.shields.io/badge/Stream%20Deck%20Plugin-Available-purple)](https://github.com/sebinside/HotkeylessAHK?tab=readme-ov-file#elgato-stream-deck-plugin)
 
 The **AutoHotkey** (AHK) environment is a *powerful tool* to enhance your productivity and *speed up your workflow*. There are so many possibilities and use cases that sometimes... you might *run out of hotkeys*. Or you might want to *combine* AHK-scripts or trigger them from different sources or even from other computers in your local network.
 
