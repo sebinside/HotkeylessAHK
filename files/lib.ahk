@@ -5,7 +5,7 @@ HTTP_METHOD := "GET"
 SetupServer() {
     DllCall("AllocConsole")
     WinHide("ahk_id " DllCall("GetConsoleWindow", "ptr"))
-    Run("node `"`"files/dist/index.js`"`"")
+    Run("node `"`"files/index.js`"`"")
 }
 
 ; Runs the client by sending requests to the server and handling the responses

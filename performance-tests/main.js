@@ -51,7 +51,7 @@ async function runScript(script) {
 
 async function runScripts() {
   console.log("Please ensure that AutoHotkey and the server are shut down before proceeding.");
-  console.log("Start the backend server with 'node index.js' from the 'files/dist' folder.");
+  console.log("Start the backend server with 'node index.js' from the 'files' folder.");
 
   const rl = readline.createInterface({
     input: process.stdin,
