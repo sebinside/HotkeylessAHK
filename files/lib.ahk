@@ -1,18 +1,19 @@
-BASE_URL := "http://localhost:42800/"
 HTTP_METHOD := "GET"
 
 ; Sets up the server by allocating a console and hiding it
-SetupServer(debug) {
+SetupServer(serverPort, debug) {
     if (!debug) {
         DllCall("AllocConsole")
         WinHide("ahk_id " DllCall("GetConsoleWindow", "ptr"))
     }
-    
-    Run("node `"`"files/index.js`"`"")
+
+    Run("node `"`"files/index.js`"`" " . serverPort)
 }
 
 ; Runs the client by sending requests to the server and handling the responses
-RunClient(functionClassNames) {
+RunClient(serverPort, functionClassNames) {
+    BASE_URL := "http://localhost:" . serverPort . "/"
+
     whr := ComObject("WinHttp.WinHttpRequest.5.1")
     allFunctions := GetAvailableFunctions(functionClassNames)
 
