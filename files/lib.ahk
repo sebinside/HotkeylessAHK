@@ -2,16 +2,19 @@ BASE_URL := "http://localhost:42800/"
 HTTP_METHOD := "GET"
 
 ; Sets up the server by allocating a console and hiding it
-SetupServer() {
-    DllCall("AllocConsole")
-    WinHide("ahk_id " DllCall("GetConsoleWindow", "ptr"))
+SetupServer(debug) {
+    if (!debug) {
+        DllCall("AllocConsole")
+        WinHide("ahk_id " DllCall("GetConsoleWindow", "ptr"))
+    }
+    
     Run("node `"`"files/index.js`"`"")
 }
 
 ; Runs the client by sending requests to the server and handling the responses
-RunClient() {
+RunClient(functionClassNames) {
     whr := ComObject("WinHttp.WinHttpRequest.5.1")
-    allFunctions := GetAvailableFunctions()
+    allFunctions := GetAvailableFunctions(functionClassNames)
 
     Loop {
         if (!SendRequest(whr, HTTP_METHOD, BASE_URL . "register/" . allFunctions, false)) {
@@ -124,11 +127,10 @@ ParamSplit(text) {
 }
 
 ; Retrieves a list of available functions from the CustomFunctions object
-GetAvailableFunctions() {
-    functionClasses := ["CustomFunctions"] ; this can be expanded to allow for OTHER function classes, I.E PersonalFunctions, WorkFunctions and so on.
+GetAvailableFunctions(functionClassNames) {
     allMembers := ""
 
-    for _, className in functionClasses {
+    for _, className in functionClassNames {
         classObj := %className%()
         for key in classObj.Base.OwnProps() {
             if classObj.Base.HasMethod(key) {
