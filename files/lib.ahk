@@ -74,7 +74,7 @@ CallCustomFunctionByName(methodName, totalParameters, params*) {
         try {
             method.Call(params*)
         } catch as e {
-            MsgBox "HotkeylessAHK called the method '" . methodName . "' with " . totalParameters . " parameters but received the following error: " e.message
+            MsgBox "HotkeylessAHK called the method '" . methodName . "' with " . totalParameters . " parameters but received the following error:`n`n" e.message . "`n`nIn the following window, press 'Reload' to ignore and restart."
             throw e
             }
 }
