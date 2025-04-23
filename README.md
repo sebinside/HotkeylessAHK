@@ -42,7 +42,7 @@ HelloWorld() {
 
 Furthermore, you can include your own AHK scripts using the `#Include` directive and define custom functionality in a nice and clean way - without loosing too much performance. You can use your web browser, shortcuts, or the [Elgato Stream Deck](https://www.elgato.com/gaming/stream-deck) with the **HotkeylessAHK** plugin. This plugin automatically browses existing functions and lets you call them easily.
 
-![Stream Deck example](streamdeck.png)
+![Stream Deck example](streamdeck.PNG)
 
 To increase the reusability of your AHK functions, **HotkeylessAHK** allows you to also pass parameters to the called function, see the example provided in the main [HotkeylessAHK.ahk](https://github.com/sebinside/HotkeylessAHK/blob/main/HotkeylessAHK.ahk) file:
 
@@ -110,7 +110,9 @@ debug := false ; setting this to true shows the normally hidden console window o
 
 ## Security
 
-Please note, that **HotkeylessAHK** is not meant to be used in insecure environments as there are *no* security measures like access control implemented! Everyone with access to your localhost can at least run any function that you defined and provided to **HotkeylessAHK**. We are not aware of further remote code execution possibilities via **HotkeylessAHK**, but as we also do not apply any kind of input sanitization, they are probably viable. TL;DR: **HotkeylessAHK** is insecure by design.
+Please note, that **HotkeylessAHK** is not meant to be used in insecure environments as there are *no* security measures like access control implemented! Everyone with access to your localhost can at least run any function that you defined and provided to **HotkeylessAHK**. We are not aware of further remote code execution possibilities via **HotkeylessAHK**, but as we also do not apply any kind of input sanitization, they are probably viable. 
+
+TL;DR: **HotkeylessAHK** is insecure by design.
 
 ## Under the Hood
 
@@ -123,7 +125,7 @@ To decide whether an incoming request is valid, it keeps a list of all function 
 The subscribing AutoHotkey script waits for a response to its request to the **HotkeylessAHK** server and executes the according function.
 If the function name is `kill`, the script first asks the Node.js server to shut down and than terminates itself.
 
-The following sequence diagram summarizes the communication of **HotkeylessAHK** with other services like the Stream Deck plugin:
+The following sequence diagram summarizes the communication of **HotkeylessAHK** (client and server) with other services like the Stream Deck plugin:
 
 ```mermaid
 sequenceDiagram
